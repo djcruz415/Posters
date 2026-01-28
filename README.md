@@ -26,8 +26,9 @@ Generador de afiches publicitarios con Inteligencia Artificial.
      - **Value:** (Pega aquí tu clave de Google AI Studio)
 5. Haz clic en **"Deploy"**.
 
-### 3. Actualizar cambios
-Cada vez que hagas un `git push` a tu repositorio, Vercel actualizará la página automáticamente.
+### 📝 Notas sobre errores comunes
+- **Error de JSX:** Si Vercel indica que no puede usar JSX, asegúrate de que el archivo `tsconfig.json` tenga `"jsx": "react-jsx"`. Esta versión ya incluye esa corrección.
+- **API_KEY:** No olvides configurar la variable de entorno en Vercel, de lo contrario la IA no funcionará en la versión desplegada.
 
 ---
 Desarrollado para **CX Automations**.
