@@ -5,19 +5,20 @@ import react from '@vitejs/plugin-react';
 export default defineConfig({
   plugins: [react()],
   define: {
-    // Inyecta la variable de entorno para que esté disponible en el navegador
+    // Esto permite que el código acceda a process.env.API_KEY en el navegador
     'process.env.API_KEY': JSON.stringify(process.env.API_KEY)
   },
   build: {
     outDir: 'dist',
     sourcemap: false,
     minify: 'esbuild',
-    // Aumentamos el límite a 1000kb para evitar el aviso de fragmentos grandes
-    chunkSizeWarningLimit: 1000,
+    // Aumentamos el límite para que no salga el aviso amarillo en los logs
+    chunkSizeWarningLimit: 2000,
     rollupOptions: {
       output: {
         manualChunks: {
-          vendor: ['react', 'react-dom', '@google/genai', 'html2canvas']
+          'vendor-react': ['react', 'react-dom'],
+          'vendor-utils': ['@google/genai', 'html2canvas']
         }
       }
     }
