@@ -2,12 +2,6 @@
 import { GoogleGenAI } from "@google/genai";
 
 export class GeminiService {
-  private ai: GoogleGenAI;
-
-  constructor() {
-    this.ai = new GoogleGenAI({ apiKey: process.env.API_KEY || '' });
-  }
-
   /**
    * Helper to ensure we have base64 data regardless of input type (URL or DataURL)
    */
@@ -32,14 +26,14 @@ export class GeminiService {
       });
     } catch (error) {
       console.error("Error converting URL to base64:", error);
-      // Fallback to a default or throw
       throw new Error("No se pudo procesar la imagen actual para editarla.");
     }
   }
 
   async generatePosterBackground(prompt: string, style: string = "modern corporate tech"): Promise<string | null> {
+    const ai = new GoogleGenAI({ apiKey: process.env.API_KEY || '' });
     try {
-      const response = await this.ai.models.generateContent({
+      const response = await ai.models.generateContent({
         model: 'gemini-2.5-flash-image',
         contents: {
           parts: [
@@ -73,10 +67,11 @@ export class GeminiService {
   }
 
   async editImage(imageSource: string, prompt: string): Promise<string | null> {
+    const ai = new GoogleGenAI({ apiKey: process.env.API_KEY || '' });
     try {
       const { data, mimeType } = await this.ensureBase64(imageSource);
       
-      const response = await this.ai.models.generateContent({
+      const response = await ai.models.generateContent({
         model: 'gemini-2.5-flash-image',
         contents: {
           parts: [
