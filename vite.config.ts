@@ -5,20 +5,19 @@ import react from '@vitejs/plugin-react';
 export default defineConfig({
   plugins: [react()],
   define: {
-    // Esto permite que el código acceda a process.env.API_KEY en el navegador
+    // Esto inyecta la API KEY de Vercel en el código del navegador
     'process.env.API_KEY': JSON.stringify(process.env.API_KEY)
   },
   build: {
     outDir: 'dist',
     sourcemap: false,
     minify: 'esbuild',
-    // Aumentamos el límite para que no salga el aviso amarillo en los logs
-    chunkSizeWarningLimit: 2000,
+    // Subimos el límite para que Vercel no se queje del tamaño de los archivos de IA
+    chunkSizeWarningLimit: 3000,
     rollupOptions: {
       output: {
         manualChunks: {
-          'vendor-react': ['react', 'react-dom'],
-          'vendor-utils': ['@google/genai', 'html2canvas']
+          'vendor': ['react', 'react-dom', '@google/genai', 'html2canvas']
         }
       }
     }
