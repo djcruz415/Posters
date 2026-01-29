@@ -1,10 +1,14 @@
-
 import { GoogleGenAI } from "@google/genai";
 
 export class GeminiService {
-  /**
-   * Helper to ensure we have base64 data regardless of input type (URL or DataURL)
-   */
+  private getApiKey(): string {
+    const key = process.env.API_KEY;
+    if (!key || key === 'undefined' || key === '') {
+      throw new Error("La API KEY no está configurada. Verifica las variables de entorno en Vercel y vuelve a desplegar.");
+    }
+    return key;
+  }
+
   private async ensureBase64(imageSource: string): Promise<{ data: string; mimeType: string }> {
     if (imageSource.startsWith('data:')) {
       const [header, data] = imageSource.split(',');
@@ -31,7 +35,7 @@ export class GeminiService {
   }
 
   async generatePosterBackground(prompt: string, style: string = "modern corporate tech"): Promise<string | null> {
-    const ai = new GoogleGenAI({ apiKey: process.env.API_KEY || '' });
+    const ai = new GoogleGenAI({ apiKey: this.getApiKey() });
     try {
       const response = await ai.models.generateContent({
         model: 'gemini-2.5-flash-image',
@@ -67,7 +71,7 @@ export class GeminiService {
   }
 
   async editImage(imageSource: string, prompt: string): Promise<string | null> {
-    const ai = new GoogleGenAI({ apiKey: process.env.API_KEY || '' });
+    const ai = new GoogleGenAI({ apiKey: this.getApiKey() });
     try {
       const { data, mimeType } = await this.ensureBase64(imageSource);
       

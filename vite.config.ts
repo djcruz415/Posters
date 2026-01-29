@@ -5,14 +5,14 @@ import react from '@vitejs/plugin-react';
 export default defineConfig({
   plugins: [react()],
   define: {
-    // Esto inyecta la API KEY de Vercel en el código del navegador
+    // Esto es crucial: reemplaza literalmente 'process.env.API_KEY' en tu código 
+    // con el valor real que tenga Vercel durante el build.
     'process.env.API_KEY': JSON.stringify(process.env.API_KEY)
   },
   build: {
     outDir: 'dist',
     sourcemap: false,
     minify: 'esbuild',
-    // Subimos el límite para que Vercel no se queje del tamaño de los archivos de IA
     chunkSizeWarningLimit: 3000,
     rollupOptions: {
       output: {
